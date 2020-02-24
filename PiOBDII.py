@@ -1,72 +1,7 @@
-#!/usr/bin/python3
-
-# This program is free software: you can redistribute it and/or modify
-# it under the terms of the GNU General Public License as published by
-# the Free Software Foundation, either version 3 of the License, or
-# (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-#/***************************************************************************/
-#/* Raspberry Pi ELM327 OBBII CAN BUS Diagnostic Software.                  */
-#/*                                                                         */
-#/* (C) Jason Birch 2018-04-27 V1.00                                        */
-#/*                                                                         */
-#/* 2018-04-29 V1.01 - Implemented ELM327 class. Finding all valid PIDs.    */
-#/*                    Running all valid PIDs and displaying the results.   */
-#/*                                                                         */
-#/* 2018-05-01 V1.02 - Added initial graphical user interface components.   */
-#/*                                                                         */
-#/* 2018-05-09 V1.03 - Icons on buttons, lock meters, additional buttons    */
-#/*                    and arrange buttons. Tested bluetooth ELM327 device. */
-#/*                                                                         */
-#/* 2018-05-15 V1.04 - Complete dial gague representation. Save meters      */
-#/*                    between application runs. Config font, serial port   */
-#/*                    and vehicle. Busy indicator on meter updates. Change */
-#/*                    modal operation to a blocking invisible button to    */
-#/*                    simplify list selection.                             */
-#/*                                                                         */
-#/* 2018-05-24 V1.05 - Added Bluetooth pairing description to acompany      */
-#/*                    YouTube video, pairing Bluetooth devices on a        */
-#/*                    Raspberry Pi. Plus other minor updates.              */
-#/*                                                                         */
-#/* 2018-05-25 V1.06 - Added debug config option to toggle on and off debug */
-#/*                    logging to resolve issues.                           */
-#/*                                                                         */
-#/* 2018-05-25 V1.07 - ELM327 Devices can have configuration settings saved */
-#/*                    so even after a reset they reset to specific setting */
-#/*                    Fix for issues when this is the case by being more   */
-#/*                    specific on ELM327 Device initialisation.            */
-#/*                                                                         */
-#/* 2018-05-28 V1.08 - Added GO/STOP button, so data logging can occur as   */
-#/*                    fast as the ELM327 can communicate via OBDII.        */
-#/*                                                                         */
-#/* 2018-05-29 V1.09 - Updated to try and test some of the fake ELM327      */
-#/*                    devices. Do not use fake devices, there are reports  */
-#/*                    that they can cause damage.                          */
-#/* REF: obd-car-doctor.com/en-us/thread/Attention-Bad-Bluetooth-adapters-/ */
-#/*                                                                         */
-#/* Initial OBDII Python application to read trouble codes from the ECU and */
-#/* display each trouble code along with it's human readable description.   */
-#/*                                                                         */
-#/* In this initial version, the user must update the constant at the top   */
-#/* of the program code, SERIAL_PORT_NAME, with the serial port which is    */
-#/* to be used. Future verstions of the code should have a graphical        */
-#/* interface for configuration and provide more features than just reading */
-#/* trouble codes.                                                          */
-#/***************************************************************************/
-
-
 import subprocess
 import datetime
 import random
-import _thread
+import thread
 import pygame
 import ELM327
 import Visual
