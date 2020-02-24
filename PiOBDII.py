@@ -24,8 +24,7 @@ TIMER_PERIOD = 500
 EVENT_TIMER = pygame.USEREVENT + 1
 
 # Lock to prevent ELM327 communications occuring when an existing one still running.
-LockELM327 = _
-.allocate_lock()
+LockELM327 = thread.allocate_lock()
 
 # Lock to prevent multiple aquisition threads of execution.
 LockAquisition = thread.allocate_lock()
