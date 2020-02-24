@@ -3,7 +3,7 @@ import datetime
 import random
 import thread
 import pygame
-import ELM327
+#import ELM327
 import Visual
 import Button
 import Gadgit
