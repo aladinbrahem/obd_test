@@ -24,10 +24,11 @@ TIMER_PERIOD = 500
 EVENT_TIMER = pygame.USEREVENT + 1
 
 # Lock to prevent ELM327 communications occuring when an existing one still running.
-LockELM327 = _thread.allocate_lock()
+LockELM327 = _
+.allocate_lock()
 
 # Lock to prevent multiple aquisition threads of execution.
-LockAquisition = _thread.allocate_lock()
+LockAquisition = thread.allocate_lock()
 
 # List of visual class instances to be flashed.
 FlashVisuals = {}
@@ -273,7 +274,7 @@ def ClearTroubleInfo(ThisDisplay):
 	# Allow another ELM327 communication now this one is complete.
 	LockELM327.release()
 	if LockELM327.acquire(0):
-		_thread.start_new_thread(TroubleInfo, (ThisDisplay, ))
+		thread.start_new_thread(TroubleInfo, (ThisDisplay, ))
 
 
 
@@ -334,11 +335,11 @@ def AquisitionLoop(ThisDisplay):
 			# Update the gadgit data from the ECU.
 			if ThisDisplay.CurrentTab == ThisDisplay.Meters and ThisDisplay.Meters["LOCK"].GetDown() == True and ThisDisplay.Meters["GO_STOP"].GetDown() == True:
 				if LockELM327.acquire(0):
-					_thread.start_new_thread(MeterData, (ThisDisplay, ))
+					thread.start_new_thread(MeterData, (ThisDisplay, ))
 			# Update the plot data from the ECU.
 			if ThisDisplay.CurrentTab == ThisDisplay.Plots and ThisDisplay.Plots["GO_STOP"].GetDown() == True:
 				if LockELM327.acquire(0):
-					_thread.start_new_thread(PlotData, (ThisDisplay, ))
+					thread.start_new_thread(PlotData, (ThisDisplay, ))
 	except Exception as Catch:
 		print(str(Catch))
 	# Allow this function to be called again if required.
@@ -355,7 +356,7 @@ pygame.time.set_timer(EVENT_TIMER, TIMER_PERIOD)
 
 # Aquire a lock for use when communicating with the ELM327 device.
 if LockELM327.acquire(0):
-	_thread.start_new_thread(ConnectELM327, (ThisDisplay, ))
+	thread.start_new_thread(ConnectELM327, (ThisDisplay, ))
 
 # Application message loop.
 ExitFlag = False
@@ -422,7 +423,7 @@ while ExitFlag == False:
 							ExitFlag = True
 						elif ButtonGadgit["GADGIT"] == "CONFIRM_CLEAR_ECU":
 							if LockELM327.acquire(0):
-								_thread.start_new_thread(ClearTroubleInfo, (ThisDisplay, ))
+								thread.start_new_thread(ClearTroubleInfo, (ThisDisplay, ))
 					# If confirm dialog button no is pressed, close the dialog.
 					elif ButtonGadgit["BUTTON"] == "NO":
 						ThisDisplay.CurrentTab.pop("CONFIRM", None)
@@ -505,7 +506,7 @@ while ExitFlag == False:
 					# If connect button is pressed, connect to the CAN BUS.
 					elif ButtonGadgit["BUTTON"] == "CONNECT":
 						if LockELM327.acquire(0):
-							_thread.start_new_thread(ConnectELM327, (ThisDisplay, ))
+							thread.start_new_thread(ConnectELM327, (ThisDisplay, ))
 					# If select button is pressed, select a PID for the specific gadgit.
 					elif ButtonGadgit["BUTTON"] == "SELECT" or ButtonGadgit["BUTTON"][:5] == "PLOT_":
 						# Remember which gadgit the select is for.
@@ -532,11 +533,11 @@ while ExitFlag == False:
 					# If vehicle button is pressed, get the vehicle data from the ECU.
 					elif ButtonGadgit["BUTTON"] == "VEHICLE":
 						if LockELM327.acquire(0):
-							_thread.start_new_thread(VehicleData, (ThisDisplay, ))
+							thread.start_new_thread(VehicleData, (ThisDisplay, ))
 					# If trouble or refresh button is pressed, get the trobule related data from the ECU.
 					elif ButtonGadgit["BUTTON"] == "TROUBLE" or ButtonGadgit["BUTTON"] == "MIL" or ButtonGadgit["BUTTON"] == "REFRESH":
 						if LockELM327.acquire(0):
-							_thread.start_new_thread(TroubleInfo, (ThisDisplay, ))
+							thread.start_new_thread(TroubleInfo, (ThisDisplay, ))
 							# Check for MIL status after reading trouble data.
 							FlashVisuals.pop("MIL", None)
 							ThisDisplay.Buttons["MIL"].SetDown(False)
@@ -549,11 +550,11 @@ while ExitFlag == False:
 					# If freeze button is pressed.
 					elif ButtonGadgit["BUTTON"] == "FREEZE" or ButtonGadgit["BUTTON"] == "RELOAD_FREEZE":
 						if LockELM327.acquire(0):
-							_thread.start_new_thread(FreezeFrameData, (ThisDisplay, ))
+							thread.start_new_thread(FreezeFrameData, (ThisDisplay, ))
 					# If frame button is pressed, get a frame of data from the ECU.
 					elif ButtonGadgit["BUTTON"] == "FRAME" or ButtonGadgit["BUTTON"] == "RELOAD":
 						if LockELM327.acquire(0):
-							_thread.start_new_thread(FrameData, (ThisDisplay, ))
+							thread.start_new_thread(FrameData, (ThisDisplay, ))
 					# If add button is pressed, add a new gadgit to the meters tab.
 					elif ButtonGadgit["BUTTON"] == "ADD":
 						if ThisDisplay.CurrentTab == ThisDisplay.Meters:
@@ -563,7 +564,7 @@ while ExitFlag == False:
 					elif ButtonGadgit["BUTTON"] == "GO_STOP":
 						if ThisDisplay.CurrentTab == ThisDisplay.Meters or ThisDisplay.CurrentTab == ThisDisplay.Plots:
 							if LockAquisition.acquire(0):
-								_thread.start_new_thread(AquisitionLoop, (ThisDisplay, ))
+								thread.start_new_thread(AquisitionLoop, (ThisDisplay, ))
 					# If add button is pressed, add a new gadgit to the meters tab.
 					elif ButtonGadgit["BUTTON"] == "LOCK":
 						if ThisDisplay.Meters["LOCK"].GetDown() == False:
