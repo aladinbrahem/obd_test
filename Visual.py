@@ -1,6 +1,6 @@
 import pygame
 import pygame.color
-import pygame.freetype
+import pygame.font
 import ELM327
 
 
